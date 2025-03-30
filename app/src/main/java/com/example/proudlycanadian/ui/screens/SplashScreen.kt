@@ -24,13 +24,18 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavHostController
+import com.example.proudlycanadian.ui.navigation.Destination
 
 /**
  * SplashScreen - The welcome screen of the app.
  * Displays the app name, logo, and provides options for the user to log in or sign up for an account.
  */
 @Composable
-fun SplashScreen(onLoginClick: () -> Unit) {
+fun SplashScreen(
+    onLoginClick: () -> Unit,
+    onSignUpClick: () -> Unit)
+{
     // Temporary log-in bypass
     val context = LocalContext.current
     LaunchedEffect(Unit) {
@@ -84,7 +89,9 @@ fun SplashScreen(onLoginClick: () -> Unit) {
                 }
 
                 OutlinedButton(
-                    onClick = { /* Handle signing up for an account */ },
+                    onClick = {
+                        onSignUpClick()
+                    },
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text("Sign Up", fontSize = 18.sp)

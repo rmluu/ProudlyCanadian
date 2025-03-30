@@ -12,7 +12,7 @@ android {
     defaultConfig {
         applicationId = "com.example.proudlycanadian"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -41,6 +41,19 @@ android {
 }
 
 dependencies {
+    // Google ML Kit Barcode Scanning
+    implementation(libs.mlkit.barcode.scanning)
+    implementation(libs.camera.mlkit.vision)
+
+    // CameraX dependencies for camera integration
+    implementation(libs.androidx.camera.core)
+    implementation(libs.camera.camera2)
+    implementation(libs.camera.lifecycle)
+    implementation(libs.camera.view)
+
+    // Accompanist Permissions for handling runtime permissions
+    implementation(libs.accompanistPermissions)
+
     // moshi
     implementation(libs.moshi.kotlin)
     implementation(libs.converter.moshi)

@@ -1,5 +1,6 @@
 package com.example.proudlycanadian
 
+import SignUpScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.proudlycanadian.ui.navigation.BottomNav
 import com.example.proudlycanadian.ui.navigation.Destination
@@ -29,6 +31,14 @@ import com.example.proudlycanadian.ui.screens.ScanScreen
 import com.example.proudlycanadian.ui.screens.SplashScreen
 import com.example.proudlycanadian.ui.theme.ProudlyCanadianTheme
 
+/**
+ * Proudly Canadian App
+ *
+ * This application helps users determine if a product is Canadian in origin by scanning barcodes
+ * or entering UPC numbers. Users can create and manage collections of products, view product details,
+ * and access their profile information. The app integrates with GS1 API (to be added later) to fetch
+ * product details.
+ **/
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,54 +46,59 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             ProudlyCanadianTheme {
-                DisplayContent()
+                val navController = rememberNavController()
+                App(navController = navController)
             }
         }
-    }
-}
-
-@Composable
-fun DisplayContent() {
-    val isLoggedIn = remember { mutableStateOf(false) }
-
-    if (isLoggedIn.value) {
-        // Show main content
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            val navController = rememberNavController()
-            App(navController = navController, modifier = Modifier.padding(innerPadding))
-        }
-    } else {
-        // Show splash screen until user is logged in
-        SplashScreen(
-            onLoginClick = {
-                // Temporary - set logged-in state to true when log in button pressed
-                isLoggedIn.value = true
-            }
-        )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun App(navController: NavHostController, modifier: Modifier) {
+fun App(navController: NavHostController) {
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
     Scaffold(
-        topBar = { TopAppBar(
-            title = {
-                Text(
-                    "Proudly Canadian",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
+        // Conditionally render TopAppBar only on non-Splash screens
+        topBar = {
+            if (currentRoute != Destination.Splash.route) {
+                TopAppBar(
+                    title = {
+                        Text(
+                            "Proudly Canadian",
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 )
             }
-        ) },
-        bottomBar = { BottomNav(navController = navController) }
+        },
+        // Conditionally render BottomNav only on non-Splash screens
+        bottomBar = {
+            if (currentRoute != Destination.Splash.route) {
+                BottomNav(navController = navController)
+            }
+        }
     ) { paddingValues ->
-        Spacer(modifier.padding(paddingValues))
-
         NavHost(
             navController = navController,
-            startDestination = Destination.Scan.route
+            startDestination = Destination.Splash.route, // Start at SplashScreen
+            modifier = Modifier.padding(paddingValues)
         ) {
+            // Splash Screen
+            composable(Destination.Splash.route) {
+                SplashScreen(
+                    onLoginClick = { navController.navigate(Destination.Scan.route) },
+                    onSignUpClick = { navController.navigate(Destination.SignUp.route) }
+                )
+            }
+
+            // Sign-Up Screen
+            composable(Destination.SignUp.route) {
+                SignUpScreen(navController)
+            }
+
+            // Main Screens
             composable(Destination.Scan.route) {
                 ScanScreen()
             }

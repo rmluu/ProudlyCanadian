@@ -22,7 +22,8 @@ fun ProfileScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = 18.dp, top = 90.dp, end = 18.dp),
+            .padding(horizontal = 18.dp)
+            .padding(vertical = 18.dp),
         horizontalAlignment = Alignment.Start
     ) {
         var username = "rluu"
@@ -34,7 +35,7 @@ fun ProfileScreen() {
 
         // Email Field
         Text(text = "Email: $email")
-        Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(28.dp))
 
         // Change Password Button
         Button(

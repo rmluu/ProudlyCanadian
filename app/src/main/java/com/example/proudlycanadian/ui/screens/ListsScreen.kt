@@ -56,13 +56,12 @@ fun ListsScreen() {
     val expandedCollection = remember { mutableStateOf<Collection?>(null) }
 
     Scaffold(
-        bottomBar = { BottomNav(navController = rememberNavController()) },
         content = { paddingValues ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(start = 18.dp, top = 90.dp, end = 18.dp)
                     .padding(paddingValues)
+                    .padding(horizontal = 18.dp)
             ) {
                 // Display collections
                 collections.forEach { collection ->
