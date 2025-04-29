@@ -8,10 +8,17 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.proudlycanadian.navigation.Destination
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.userProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 /**
- * SignUpScreen - Allows the user to sign up for a new account.
- */
+ * Purpose: Displays a sign-up form where the user can create an account, saving username and email to Firestore.
+ * @param navController: NavController - Used to navigate after successful sign-up.
+ **/
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(navController: NavController) {
@@ -19,14 +26,21 @@ fun SignUpScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+
+    val auth = FirebaseAuth.getInstance()
+    val firestore = FirebaseFirestore.getInstance()
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(
-                "Sign Up",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            ) })
+            TopAppBar(title = {
+                Text(
+                    "Sign Up",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            })
         }
     ) { paddingValues ->
         Column(
@@ -72,13 +86,58 @@ fun SignUpScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
-                onClick = { /* Handle sign-up action */ },
+                onClick = {
+                    // Perform signup
+                    if (password == confirmPassword && username.isNotBlank()) {
+                        coroutineScope.launch {
+                            try {
+                                val result = auth.createUserWithEmailAndPassword(email, password).await()
+                                val user = result.user
+                                if (user != null) {
+                                    // Update user's displayName
+                                    val profileUpdates = userProfileChangeRequest {
+                                        displayName = username
+                                    }
+                                    user.updateProfile(profileUpdates).await()
+
+                                    // Save user data in Firestore
+                                    val userData = mapOf(
+                                        "username" to username,
+                                        "email" to email
+                                    )
+                                    firestore.collection("users")
+                                        .document(user.uid)
+                                        .set(userData)
+                                        .await()
+
+                                    // Navigate to Scan screen
+                                    navController.navigate(Destination.Scan.route) {
+                                        popUpTo(Destination.SignUp.route) { inclusive = true }
+                                    }
+                                }
+                            } catch (e: Exception) {
+                                errorMessage = e.message
+                            }
+                        }
+                    } else {
+                        errorMessage = "Passwords don't match or username is empty."
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
             ) {
-                Text("Sign Up", fontSize = 18.sp)
+                Text("Create Account", fontSize = 18.sp)
+            }
+
+            if (errorMessage != null) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = errorMessage ?: "",
+                    color = MaterialTheme.colorScheme.error
+                )
             }
         }
     }
 }
+

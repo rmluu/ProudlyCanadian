@@ -29,6 +29,11 @@ import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import kotlinx.coroutines.delay
 
+/**
+ * Purpose: Displays a live camera preview and detects barcodes in real-time using ML Kit.
+ * @param onCodeDetected: (String) -> Unit - Callback invoked when a barcode is detected.
+ * @param modifier: Modifier - Optional modifier for layout customization.
+ */
 @Composable
 fun ScanCode(
     onCodeDetected: (String) -> Unit,
@@ -61,14 +66,14 @@ fun ScanCode(
                     // Improves efficiency and reduces false positives.
                     val options = BarcodeScannerOptions.Builder()
                         .setBarcodeFormats(
-                            Barcode.FORMAT_QR_CODE,       // QR Codes - marketing, contactless payments, URLs
-                            Barcode.FORMAT_CODABAR,       // Codabar - numeric encoding
-                            Barcode.FORMAT_CODE_93,       // Code 93 - alphanumeric encoding, low density
-                            Barcode.FORMAT_CODE_39,       // Code 39 - alphanumeric encoding, higher density
-                            Barcode.FORMAT_CODE_128,      // Code 128 - alphanumeric encoding, highest density
+                            // Barcode.FORMAT_QR_CODE,       // QR Codes - marketing, contactless payments, URLs
+                            // Barcode.FORMAT_CODABAR,       // Codabar - numeric encoding
+                            // Barcode.FORMAT_CODE_93,       // Code 93 - alphanumeric encoding, low density
+                            // Barcode.FORMAT_CODE_39,       // Code 39 - alphanumeric encoding, higher density
+                            // Barcode.FORMAT_CODE_128,      // Code 128 - alphanumeric encoding, highest density
                             Barcode.FORMAT_EAN_8,         // EAN-8 - shorter EAN code - small products
                             Barcode.FORMAT_EAN_13,        // EAN-13 - product identification
-                            Barcode.FORMAT_AZTEC          // Aztec - large amount of data i.e. airline tickets
+                            // Barcode.FORMAT_AZTEC          // Aztec - large amount of data i.e. airline tickets
                         )
                         .build()
 
@@ -118,10 +123,9 @@ fun ScanCode(
     }
 }
 
-/*
- * Purpose: Draws a rectangle around the detected barcode in the camera preview.
- * args: rect - The bounding rectangle of the detected barcode.
- * returns: None.
+/**
+ * Purpose: Draws a red rectangle overlay on the camera preview around the detected barcode.
+ * @param rect: Rect - Bounding box of the detected barcode (from ML Kit).
  */
 @Composable
 fun DrawRectangle(rect: Rect) {

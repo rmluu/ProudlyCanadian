@@ -1,14 +1,13 @@
 package com.example.proudlycanadian.ui.screens
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,29 +18,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proudlycanadian.R
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.navigation.NavHostController
-import com.example.proudlycanadian.ui.navigation.Destination
 
 /**
- * SplashScreen - The welcome screen of the app.
- * Displays the app name, logo, and provides options for the user to log in or sign up for an account.
+ * Purpose: Displays the welcome screen with the app name, logo, and sign-in options.
+ * @param onLoginClick: () -> Unit - Triggered when the user clicks the "Log In with Email" button.
+ * @param onGoogleSignInClick: () -> Unit - Triggered when the user clicks the "Sign In with Google" button.
  */
 @Composable
 fun SplashScreen(
     onLoginClick: () -> Unit,
-    onSignUpClick: () -> Unit)
-{
-    // Temporary log-in bypass
-    val context = LocalContext.current
-    LaunchedEffect(Unit) {
-        Toast.makeText(context, "For testing purposes - hit 'log in' to continue", Toast.LENGTH_SHORT).show()
-    }
-
+    onGoogleSignInClick: () -> Unit,
+    onSignUpClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -57,46 +54,73 @@ fun SplashScreen(
 
             // App name
             Text(
-                text = "Proudly Canadian",
-                fontSize = 36.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 50.dp)
+                "Proudly Canadian",
+                fontSize = 35.sp,
+                fontWeight = FontWeight.ExtraBold,
+                letterSpacing = 2.sp
             )
 
             // Logo
             Image(
-                painter = painterResource(id = R.mipmap.ic_logo),
+                painter = painterResource(id = R.mipmap.ic_welcome),
                 contentDescription = "Proudly Canadian Logo",
                 modifier = Modifier
-                    .size(250.dp)
-                    .padding(bottom = 50.dp)
+                    .size(400.dp)
+                    .padding(top = 50.dp, bottom = 30.dp)
             )
 
-            // Buttons for Log in and Sign up
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
+            // Buttons for Email Log in and Google Sign-In
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
             ) {
-                OutlinedButton(
-                    onClick = {
-                        // Temporarily redirects to MainActivity on click
-                        onLoginClick()
-                    },
-                    modifier = Modifier.padding(end = 60.dp),
-                    shape = RoundedCornerShape(8.dp)
+                val buttonWidth = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                    .then(Modifier.widthIn(max = 280.dp))
+
+                Button(
+                    onClick = { onLoginClick() },
+                    modifier = buttonWidth,
+                    shape = RoundedCornerShape(8.dp),
                 ) {
-                    Text("Log In", fontSize = 18.sp)
+                    Text("Sign In with Email", fontSize = 18.sp)
                 }
 
-                OutlinedButton(
-                    onClick = {
-                        onSignUpClick()
-                    },
-                    shape = RoundedCornerShape(8.dp)
+                Button(
+                    onClick = { onGoogleSignInClick() },
+                    modifier = buttonWidth,
+                    shape = RoundedCornerShape(8.dp),
                 ) {
-                    Text("Sign Up", fontSize = 18.sp)
+                    Text("Sign In with Google", fontSize = 18.sp)
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                HorizontalDivider(
+                    modifier = Modifier
+                        .width(200.dp)
+                        .align(Alignment.CenterHorizontally),
+                    thickness = 1.dp,
+                    color = Color.Gray
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                OutlinedButton(
+                    onClick = { onSignUpClick() },
+                    modifier = buttonWidth,
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = Color(0xFF212121)
+                    )
+                ) {
+                    Text("Register an Account", fontSize = 18.sp)
                 }
             }
+
             Spacer(modifier = Modifier.weight(3f))
         }
     }
