@@ -1,4 +1,4 @@
-package com.example.proudlycanadian.api.model
+package com.example.proudlycanadian.model
 
 /**
  * Purpose: Represents a product collection in Firestore, which includes a list of products.

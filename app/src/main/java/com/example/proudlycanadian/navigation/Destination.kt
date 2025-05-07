@@ -1,7 +1,7 @@
 package com.example.proudlycanadian.navigation
 
 import android.net.Uri
-import com.example.proudlycanadian.api.model.FirestoreProduct
+import com.example.proudlycanadian.model.FirestoreProduct
 
 /**
  * Purpose: Defines various screen destinations for navigation.

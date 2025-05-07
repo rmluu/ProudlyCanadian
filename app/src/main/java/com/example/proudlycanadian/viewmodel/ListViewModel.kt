@@ -6,8 +6,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.proudlycanadian.api.model.Collection
-import com.example.proudlycanadian.api.model.FirestoreProduct
+import com.example.proudlycanadian.model.Collection
+import com.example.proudlycanadian.model.FirestoreProduct
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 

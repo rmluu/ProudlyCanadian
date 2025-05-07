@@ -1,4 +1,4 @@
-package com.example.proudlycanadian.api.model
+package com.example.proudlycanadian.model
 
 import android.os.Parcel
 import android.os.Parcelable

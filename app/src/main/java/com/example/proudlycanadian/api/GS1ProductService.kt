@@ -1,6 +1,6 @@
 package com.example.proudlycanadian.api
 
-import com.example.proudlycanadian.api.model.Product
+import com.example.proudlycanadian.model.Product
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Header

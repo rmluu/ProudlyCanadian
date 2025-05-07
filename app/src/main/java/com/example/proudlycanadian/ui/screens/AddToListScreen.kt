@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -37,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.example.proudlycanadian.api.model.FirestoreProduct
+import com.example.proudlycanadian.model.FirestoreProduct
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.proudlycanadian.viewmodel.ListViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -87,11 +88,10 @@ fun AddToListScreen(
         // Product Image
         AsyncImage(
             model = imageUrl,
-            contentDescription = "Product Image",
+            contentDescription = "Image of ${productName}",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .width(150.dp)
-                .height(150.dp)
+                .size(150.dp)
                 .clip(RoundedCornerShape(12.dp))
                 .align(Alignment.CenterHorizontally)
         )

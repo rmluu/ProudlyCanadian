@@ -1,4 +1,4 @@
-package com.example.proudlycanadian.api.model
+package com.example.proudlycanadian.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.proudlycanadian.viewmodel.ListViewModel
-import com.example.proudlycanadian.api.model.Collection
-import com.example.proudlycanadian.api.model.FirestoreProduct
+import com.example.proudlycanadian.model.Collection
+import com.example.proudlycanadian.model.FirestoreProduct
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -163,7 +163,8 @@ fun ProductCard(
                 ) {
                     Text(
                         text = "Origin: ${product.origin}",
-                        fontSize = 16.sp
+                        fontSize = 16.sp,
+                        color = if (product.origin == "US") Color(0xFFC62828) else Color.Unspecified
                     )
                     Icon(
                         imageVector = Icons.Default.Delete,

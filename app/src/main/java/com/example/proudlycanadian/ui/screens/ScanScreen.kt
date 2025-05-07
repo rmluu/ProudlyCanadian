@@ -42,7 +42,7 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.proudlycanadian.ScanCode
 import com.example.proudlycanadian.api.ProductManager
-import com.example.proudlycanadian.api.model.FirestoreProduct
+import com.example.proudlycanadian.model.FirestoreProduct
 import com.example.proudlycanadian.navigation.Destination
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -75,7 +75,6 @@ fun ScanScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
             .padding(18.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

@@ -1,8 +1,8 @@
 package com.example.proudlycanadian.api
 
 import android.util.Log
-import com.example.proudlycanadian.api.model.Product
-import com.example.proudlycanadian.api.model.UPCProductResponse
+import com.example.proudlycanadian.model.Product
+import com.example.proudlycanadian.model.UPCProductResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

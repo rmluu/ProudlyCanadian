@@ -8,6 +8,7 @@ import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -28,6 +29,9 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import kotlinx.coroutines.delay
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.asPaddingValues
 
 /**
  * Purpose: Displays a live camera preview and detects barcodes in real-time using ML Kit.
@@ -56,7 +60,10 @@ fun ScanCode(
         LifecycleCameraController(context)
     }
 
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
         // Integrates camera preview and barcode scanning functionality
         AndroidView(
             modifier = modifier.fillMaxSize(),
@@ -66,6 +73,8 @@ fun ScanCode(
                     // Improves efficiency and reduces false positives.
                     val options = BarcodeScannerOptions.Builder()
                         .setBarcodeFormats(
+                            Barcode.FORMAT_UPC_A,
+                            Barcode.FORMAT_UPC_E,
                             // Barcode.FORMAT_QR_CODE,       // QR Codes - marketing, contactless payments, URLs
                             // Barcode.FORMAT_CODABAR,       // Codabar - numeric encoding
                             // Barcode.FORMAT_CODE_93,       // Code 93 - alphanumeric encoding, low density
